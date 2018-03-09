@@ -1,10 +1,6 @@
 #! /usr/bin/env python
 from __future__ import print_function
 import sys,abc,random
-
-
-
-
 class Gomoku(object):
     # class variable storing all 140 win patterns
     win_patterns = []
@@ -101,8 +97,9 @@ class Gomoku(object):
             print("%s wins!"%(self.turn))
         else:
             print("Draw game!")
-        print("Line: ")
-        print(self.match_pattern(self.turn.symbol))
+        line = self.match_pattern(self.turn.symbol)
+        line = [str((x+1,y+1)) for x,y in line]
+        print("line: "+' '.join(line))
         return
 
 

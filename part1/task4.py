@@ -179,7 +179,7 @@ class Player(object):
             self._equipment.action(attx, atty)
         elif a== 3:
             return
-
+    # new instance method, to be called by the last one of each race (Healer)
     def askLast(self):
         print("Your health is " + str(self._health)+". Your position is (%d,%d). Your mobility is %d."%(self._pos.getX(),self._pos.getY(),self.__mobility))
         print("You now have following options: \n1. Move\n2. Heal\n3. End the turn")
@@ -211,9 +211,14 @@ class Human(Player):
         super(Human,self).__init__(80,2,posx,posy,index,game)
         self._myString = 'H' + str(index)
         self._equipment = Rifle(self)
+
     def teleport(self):
         super(Human,self).teleport()
-        self._equipment.enhance()
+        try:
+            self._equipment.enhance()
+        except BaseException as e:
+            print(e)
+
     def askForMove(self):
         if isinstance(self._equipment,Rifle):
             print("You are a human (H%d) using Rifle. (Range: %d, Ammo #: %d, Damage per shot: %d)"%(self._index,self._equipment.getRange(),self._equipment.getAmmo(),self._equipment.getEffect() ))
@@ -222,7 +227,7 @@ class Human(Player):
             print("You are a human (H%d) using Wand. (Range: %d, Effect: %d )"%(self._index,self._equipment.getRange(),self._equipment.getEffect()))
             super(Human,self).askLast()
 
-
+    # new instance method, equip Wand for the last one of each race (The healer)
     def equipWand(self):
         self._equipment = Wand(self)
 
@@ -234,7 +239,10 @@ class Chark(Player):
 
     def teleport(self):
         super(Chark,self).teleport()
-        self._equipment.enhance()
+        try:
+            self._equipment.enhance()
+        except BaseException as e:
+            print(e)
 
     def askForMove(self):
         if isinstance(self._equipment,Axe):
@@ -243,7 +251,7 @@ class Chark(Player):
         elif isinstance(self._equipment,Wand):
             print("You are a Chark (C%d) using Wand. (Range: %d, Effect: %d )"%(self._index,self._equipment.getRange(),self._equipment.getEffect()))
             super(Chark,self).askLast()
-
+    # new instance method, equip Wand for the last one of each race (The healer)
     def equipWand(self):
         self._equipment = Wand(self)
 
